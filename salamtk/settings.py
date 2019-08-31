@@ -15,7 +15,6 @@ import os
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
-
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/2.1/howto/deployment/checklist/
 
@@ -23,7 +22,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = '+8tl0%9+1x1$2k+wr@kn6unw*&!mssgfg61w@e(wfe9jepftqt'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG =True
 
 ALLOWED_HOSTS = []
 
@@ -38,40 +37,86 @@ INSTALLED_APPS =[
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    #MY_APPS:
+    #REST_APPS:
     'rest_framework',
     'rest_framework.authtoken',
+
+    'drfpasswordless',
     'django_filters',
     'rest_auth',
     'allauth',
     'allauth.account',
     'rest_auth.registration',
-    #social
-    'allauth.socialaccount',
-    'allauth.socialaccount.providers.facebook',
-    'allauth.socialaccount.providers.twitter',
-
+    # #social allauth
+    # 'allauth.socialaccount',
+    # 'allauth.socialaccount.providers.facebook',
+    # 'allauth.socialaccount.providers.twitter',
+    # #OAUTH
+    # 'oauth2_provider',
+    # 'social_django',
+    # 'rest_framework_social_oauth2',
+    #LIBRARY
     'phonenumber_field',
     #MYapps
     'doctor',
     'accounts',
 ]
+#Passswordless settings****************#
+#EMAIL
+EMAIL_HOST = 'localhost'
+EMAIL_PORT = 1025
+PASSWORDLESS_AUTH = {
+   
+   'PASSWORDLESS_AUTH_TYPES': ['MOBILE'],
+   'PASSWORDLESS_MOBILE_NOREPLY_NUMBER':'01147115213'
+  }
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
-
+#*************************************#
 SITE_ID = 1
+
 REST_FRAMEWORK = {
     # Use Django's standard `django.contrib.auth` permissions,
     # or allow read-only access for unauthenticated users.
+
     'DEFAULT_AUTHENTICATION_CLASSES': [
-        'rest_framework.authentication.TokenAuthentication',  # <-- And here
-    ],
-    'DEFAULT_PERMISSION_CLASSES': ['rest_framework.permissions.IsAuthenticated',],
+        # 'rest_framework.authentication.BasicAuthentication',
+        'rest_framework.authentication.TokenAuthentication',
+        'rest_framework.authentication.SessionAuthentication',  # <-- And here
+         # 'oauth2_provider.ext.rest_framework.OAuth2Authentication',  # django-oauth-toolkit < 1.0.0
+        # 'oauth2_provider.contrib.rest_framework.OAuth2Authentication',  # django-oauth-toolkit >= 1.0.0
+        # 'rest_framework_social_oauth2.authentication.SocialAuthentication',
+        ],
+    # 'DEFAULT_PERMISSION_CLASSES': ['rest_framework.permissions.IsAuthenticated',],
     'DEFAULT_PAGINATION_CLASS'  : 'rest_framework.pagination.PageNumberPagination',
                                   'PAGE_SIZE': 100,
     'DEFAULT_FILTER_BACKENDS'   : (
                                     'rest_framework.filters.SearchFilter',
                                     'django_filters.rest_framework.DjangoFilterBackend',),
    }
+
+
+# AUTHENTICATION_BACKENDS = (
+   
+#      # Facebook OAuth2
+#     'social_core.backends.facebook.FacebookAppOAuth2',
+#     'social_core.backends.facebook.FacebookOAuth2',
+
+#     # django-rest-framework-social-oauth2
+#     'rest_framework_social_oauth2.backends.DjangoOAuth2',
+
+#     # Django
+#    'django.contrib.auth.backends.ModelBackend',
+
+# Facebook configuration
+# SOCIAL_AUTH_FACEBOOK_KEY = '<your app id goes here>'
+# SOCIAL_AUTH_FACEBOOK_SECRET = '<your app secret goes here>'
+
+# # Define SOCIAL_AUTH_FACEBOOK_SCOPE to get extra permissions from facebook. Email is not sent by default, to get it, you must request the email permission:
+# SOCIAL_AUTH_FACEBOOK_SCOPE = ['email']
+# SOCIAL_AUTH_FACEBOOK_PROFILE_EXTRA_PARAMS = {
+#     'fields': 'id, name, email'
+# }
+
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -95,6 +140,8 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'social_django.context_processors.backends',
+                'social_django.context_processors.login_redirect',
             ],
         },
     },
@@ -108,12 +155,13 @@ WSGI_APPLICATION = 'salamtk.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql',
+        'ENGINE':'django.db.backends.postgresql_psycopg2',
         'NAME': 'salamtk',
         'USER': 'zoba',
         'PASSWORD': '123',
-        'HOST': 'localhost',
-        'PORT': '',
+        'HOST': '127.0.0.1',
+        'PORT': '5432',
+        
 
     }
 }
