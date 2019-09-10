@@ -10,7 +10,7 @@ from rest_framework_simplejwt.views import(
                                     )
 from .views import (GithubLogin, FacebookLogin,
                     UserProFileList, UserCreate,
-                    ProfileListAPI, ProfileDetailAPI,
+                    ProfileListAPI, ProfileDetailAPI
                     )
 app_name='accounts'
 router = routers.DefaultRouter()
@@ -19,6 +19,7 @@ router = routers.DefaultRouter()
 urlpatterns = [
     #Myviews
     path('register/',UserCreate.as_view(),name='register'),
+    # path('login/',LoginView.as_view(),name='login'),
     path('profiles',ProfileListAPI.as_view(),name='profiles-list'),
     path('profile/<pk>',ProfileDetailAPI.as_view(),name='profile-detail'),
     # path('', include(router.urls)),

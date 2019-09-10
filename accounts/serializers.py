@@ -11,23 +11,21 @@ class UserProfileSerializer(serializers.ModelSerializer):
 		model  = UserProfile
 		fields = ['id','user','title','description','address','url']
 
-
-
 class UserCreateSerializer(RegisterSerializer):
 	username         = serializers.CharField()
 	email    		 = serializers.EmailField()
-	phone_number     = serializers.CharField(write_only=True)
-	# password 		 = serializers.CharField(min_length=8)
-	# confirm_password = serializers.CharField(min_length=8)
+	phone_number     = serializers.CharField(min_length=11, write_only=True,
+												validators=[UniqueValidator(queryset=
+															UserProfile.objects.all())])
 	class Meta:
 		model  = UserProfile
-		fields =['id','username','email','phone_number','password','confirm_password']
+		fields = ['id','username','email','phone_number','password','confirm_password']
 
 	def create(self,validated_data):
 		user = UserProfile.objects.create(
-					username = validated_data['username'],
-					email = validated_data['email'],
-					phone_number = validated_data['phone_number'],
+						username     = validated_data['username'],
+						email 	     = validated_data['email'],
+						phone_number = validated_data['phone_number'],
 					)
 		user.set_password(validated_data['password'])
 		user.save()

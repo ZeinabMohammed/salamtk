@@ -47,6 +47,8 @@ INSTALLED_APPS =[
     'allauth',
     'allauth.account',
     'rest_auth.registration',
+
+    "fcm_django",
     # #social allauth
     # 'allauth.socialaccount',
     # 'allauth.socialaccount.providers.facebook',
@@ -60,6 +62,7 @@ INSTALLED_APPS =[
     #MYapps
     'doctor',
     'accounts',
+    'notifications',
 ]
 #Passswordless settings****************#
 #EMAIL
@@ -93,8 +96,19 @@ REST_FRAMEWORK = {
                                     'rest_framework.filters.SearchFilter',
                                     'django_filters.rest_framework.DjangoFilterBackend',),
    }
-
-
+# Fcm settings
+FCM_DJANGO_SETTINGS = {
+        # "APP_VERBOSE_NAME": "[string for AppConfig's verbose_name]",
+         # default: _('FCM Django')
+        "FCM_SERVER_KEY": "AIzaSyCSj3RalZ6xkqZsgolTvJ8W3ASrbRwO85c",
+         # true if you want to have only one active device per registered user at a time
+         # default: False
+        # "ONE_DEVICE_PER_USER": True/False,
+         # devices to which notifications cannot be sent,
+         # are deleted upon receiving error response from FCM
+         # default: False
+        # "DELETE_INACTIVE_DEVICES": True/False,
+}
 # AUTHENTICATION_BACKENDS = (
    
 #      # Facebook OAuth2

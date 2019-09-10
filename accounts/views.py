@@ -22,31 +22,29 @@ from django.http import HttpResponse,JsonResponse, Http404
 from rest_framework.reverse import reverse
 from rest_framework.decorators import api_view
 from rest_framework import permissions, status
+#Social login
 class GithubLogin(SocialLoginView):
 	adapter_class = GitHubOAuth2Adapter
 	# callback_url  = CALLBACK_URL_YOU_SET_ON_GITHUB
 	client_class  = OAuth2Client
-# API views
 class FacebookLogin(SocialLoginView):
 	adapter_class = FacebookOAuth2Adapter
 
 #Registerview
 class UserCreate(CreateAPIView):
 	"""create the user"""
-	# queryset 		   = UserProfile.objects.all()
 	serializer_class   = UserCreateSerializer
 	# permission_classes = (permissions.AllowAny,)
 	def post(self,request, format=None):
 		# permission_classes = [IsOwnerOrReadOnly,]
-		serializer 		   = UserCreateSerializer(data=request.data)
+		serializer = UserCreateSerializer(data=request.data)
 		if serializer.is_valid():
-			serializer.user=self.request.user
+			serializer.user = self.request.user
 			serializer.save(request)
 			return Response(serializer.data, status=status.HTTP_201_CREATED)
 		return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 class ProfileListAPI(APIView):
 	"""list all profiless or create new one"""
-
 	def get(self, request, format=None):
 		permission_classes = [AllowAny,]
 		profiles  		   = UserProfile.objects.all()
@@ -75,7 +73,7 @@ class ProfileDetailAPI(APIView):
 		return Response(serializer.data)
 	def put(self, request,pk, format=None):
 		profile = self.get_object(pk)
-		serializer = AdSerializer(profile, data=request.data)
+		serializer = UserProfileSerializer(profile, data=request.data)
 		if serializer.is_valid():
 			serializer.save()
 			return Response(serializer.data)
